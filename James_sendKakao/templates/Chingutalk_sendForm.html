@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>퍼포마스 친구톡 보내기</title>
+    <style>
+      fieldset {
+        width: 450px;
+        background-color: #eeeeee;
+      }
+      
+      legend {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+        text-align: center;        
+      }      
+      input {
+        margin: 5px;
+      }
+      </style>
+
+</head>
+<body>
+    <center>
+        <p><h1>sending Chingutalk</h1></p>
+        <form action = "http://127.0.0.1:5070/sendChingutalk" method="POST" enctype="multipart/form-data">          
+            <p>input sender num : 
+                <input type = "number" name = "sendNum" placeholder="plz input without '-'" value="{{
+                request.form.sendNum}}">
+            </p>
+            <p>input receiver num: 
+                <input type = "number" name = "receiveNum1" placeholder="plz input without '-'" value="{{
+                request.form.receiveNum1}}">
+               
+            </p>
+            <!-- <p>input receiver num: 
+                <input type = "text" name = "receiveNum2" placeholder="plz input without '-'" value="{{
+                request.form.receiveNum2}}">
+            </p> -->
+
+            <p>input message content: <br>
+                <input type = "text" name = "message"  style="width:300px;height:300px;" placeholder="You can enter up to 1000 characters value"{{
+                request.form.receiveNum2}}">
+            </p>
+
+            <fieldset>
+              <legend>Attach image(optional)</legend>
+              <p>insert image file:<input type = "file" name = "file" id="file" value="file" />              
+              <br>link to the image: <input type="url" name="image_url"></p>
+            </fieldset>
+
+            <div>
+              <fieldset>
+                <legend>Set send time</legend>
+                <h3></h3>
+                Now <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeNow" value="timeNow" checked/> 
+                Reserve <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeReserve" value="timeReserve" /><br>
+                    <div id="ifReserve" style="display:none">                
+                          send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
+                          send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
+                          send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
+                          <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
+                    </div>
+
+              </fieldset>
+            </div>
+            <p><input type="submit" value ="send" style="width:280px;height:50px;"/> </p>
+
+            <p><i>친구톡은 고객님의 카카오채널ID를 친구 추가한 수신자에게만 발송됩니다.<br>
+                친구 추가 되어있지 않은 수신자에게는 대체문자가 발송됩니다.</i></p>
+            
+        </form>
+    </center>
+
+    <script>
+      function sendTimeCheck() {
+          if (document.getElementById('timeReserve').checked) {
+              document.getElementById('ifReserve').style.display = 'block';
+          }
+          else document.getElementById('ifReserve').style.display = 'none';
+      
+      }
+    </script>
+    
+   
+</body>
+</html>

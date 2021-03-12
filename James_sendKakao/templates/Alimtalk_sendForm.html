@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>퍼포마스 알림톡 보내기</title>
+</head>
+<body>
+    <center>
+        <p><h1>sending Alimtalk</h1></p>
+        <form action = "http://127.0.0.1:5050/sendAlimtalk" method="POST">          
+
+            <p>input sender num : 
+                <input type = "text" name = "sendNum" placeholder="plz input without '-'" value="{{
+                request.form.sendNum}}">
+            </p>
+            <p>input receiver num: 
+                <input type = "text" name = "receiveNum1" placeholder="plz input without '-'" value="{{
+                request.form.receiveNum1}}">
+            </p>
+            <p>input receiver num: 
+                <input type = "text" name = "receiveNum2" placeholder="plz input without '-'" value="{{
+                request.form.receiveNum2}}">
+            </p>
+
+            <br>
+            <p>Select Alimtalk template</p>
+            <select name = 'template'>
+                {% for list in lists %}
+                <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
+                {% endfor %}                  
+            </select>
+            
+                
+                <div>
+                    
+                    {% for index in lists %}
+                    <ol> {{loop.index}} {{index['templtContent']}} </ol>
+                    {% endfor %}
+                    
+                    
+                </div>
+    
+            <!-- <p>문자 내용을 입력하세요: <input type = "text" name = "textfield"  style=" width:200px; height:50px; "></p> -->
+            <p><input type="submit" value ="send"/> </p>
+            
+
+             
+           
+        </form>
+    </center>
+    
+    {% for list in tpl_list %}
+    {{list}} 
+    {% endfor %}
+</body>
+</html>

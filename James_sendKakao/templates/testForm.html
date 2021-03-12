@@ -1,0 +1,34 @@
+<body>
+    
+    <center>
+        <p><h1>sending Chingutalk</h1></p>
+        <form action = "http://127.0.0.1:5090/sendTest" method="POST" enctype="multipart/form-data">          
+            <div>
+                <fieldset>
+                  <legend>Set send time</legend>
+                  <h3></h3>
+                  Now <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id ="timeNow"value="timeNow" checked/> 
+                  Reserve <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id ="timeReserve" value="timeReserve" /><br>
+                      <div id="ifReserve" style="display:none">                
+                            send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
+                            send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
+                            send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
+                            <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
+                      </div>
+  
+                </fieldset>
+                <p><input type="submit" value ="send" style="width:280px;height:50px;"/> </p>
+              </div>
+        </form>
+    </center>
+
+    <script>
+        function sendTimeCheck() {
+            if (document.getElementById('timeReserve').checked) {
+                document.getElementById('ifReserve').style.display = 'block';
+            }
+            else document.getElementById('ifReserve').style.display = 'none';
+        
+        }
+      </script>
+</body>
