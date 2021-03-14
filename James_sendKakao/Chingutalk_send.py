@@ -48,7 +48,7 @@ def sendMessage():
         timeNow = datetime.now()
         timeDiff = (timeInput - timeNow).seconds
         if timeDiff < 600:
-            return render_template('wrongdate.html')
+            return render_template('wrongdate_Chingutalk.html')
    
 
     basic_send_url = 'https://kakaoapi.aligo.in/akv10/friend/send/'

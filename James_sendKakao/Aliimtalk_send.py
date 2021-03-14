@@ -1,9 +1,10 @@
 from flask import Flask, request, render_template, redirect
+from datetime import datetime, timedelta
 import requests
 import json
 
 from Alimtalk_checkList import getTemplateMessage
-from get_token2 import genToken  #token 생성
+from get_token import genToken  #token 생성
 
 app = Flask("__name__")
 
@@ -41,6 +42,28 @@ def sendMessage1():
 
     tpl_code = request.form.get('template')
     message_1 = getTemplateMessage(tpl_code)
+
+
+    senddate =""
+
+    if request.form["sendingtime"] == "timeNow":
+        pass
+    else: 
+        senddate = request.form['date']+request.form['hour']+request.form['min']+"00"
+        
+        #====Show error page if user input wrong time====
+        send_year = int(request.form['date'][:4])
+        send_mon = int(request.form['date'][4:6])
+        send_date = int(request.form['date'][6:8])
+        send_hour = int(request.form['hour'])
+        send_min = int(request.form['min'])
+        send_sec = int("00")
+        
+        timeInput = datetime(send_year, send_mon, send_date, send_hour, send_min, send_sec)
+        timeNow = datetime.now()
+        timeDiff = (timeInput - timeNow).seconds
+        if timeDiff < 600:
+            return render_template('wrongdate_Alimtalk.html')
 
     basic_send_url = 'https://kakaoapi.aligo.in/akv10/alimtalk/send/' # 요청을 던지는 URL, 알림톡 전송
 
