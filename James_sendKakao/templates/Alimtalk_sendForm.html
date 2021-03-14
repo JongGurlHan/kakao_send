@@ -5,6 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>퍼포마스 알림톡 보내기</title>
+    <style>
+        fieldset {
+          width: 450px;
+          background-color: #eeeeee;
+        }
+        
+        legend {
+          background-color: gray;
+          color: white;
+          padding: 5px 10px;
+          text-align: center;        
+        }      
+        input {
+          margin: 5px;
+        }
+        </style>
 </head>
 <body>
     <center>
@@ -41,6 +57,22 @@
                     
                     
                 </div>
+
+                <div>
+                    <fieldset>
+                      <legend>Set send time</legend>
+                      <h3></h3>
+                      Now <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeNow" value="timeNow" checked/> 
+                      Reserve <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeReserve" value="timeReserve" /><br>
+                          <div id="ifReserve" style="display:none">                
+                                send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
+                                send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
+                                send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
+                                <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
+                          </div>
+      
+                    </fieldset>
+                  </div>
     
             <!-- <p>문자 내용을 입력하세요: <input type = "text" name = "textfield"  style=" width:200px; height:50px; "></p> -->
             <p><input type="submit" value ="send"/> </p>
@@ -54,5 +86,16 @@
     {% for list in tpl_list %}
     {{list}} 
     {% endfor %}
+
+
+    <script>
+        function sendTimeCheck() {
+            if (document.getElementById('timeReserve').checked) {
+                document.getElementById('ifReserve').style.display = 'block';
+            }
+            else document.getElementById('ifReserve').style.display = 'none';
+        
+        }
+      </script>
 </body>
 </html>
