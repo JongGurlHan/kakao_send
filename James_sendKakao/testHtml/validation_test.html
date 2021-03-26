@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="/static/css/roboto-font.css">
+	<link rel="stylesheet" type="text/css" href="/static/fonts/font-awesome-5/css/fontawesome-all.min.css">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="/static/css/style.css"/>
+
+    <title>퍼포마스 알림톡 보내기</title>
+  </head>
+
+  <body>
+    <h1>Hello, world!</h1>
+
+
+    <body class="form-v5">
+        <div class="page-content">
+            <div class="form-v5-content">
+                <form class="form-detail needs-validation"  action = "http://127.0.0.1:5070/sendAlimtalk" method="post" novalidate>
+                    
+                    <div class="col-md-4">
+                    <label for="validationCustom01" class="form-label">발신자 번호</label>
+                    <input type="text" class="form-control" id="validationCustom01" name = "sendNum" placeholder="'-'없이 입력해주세요" required>
+                    <div class="invalid-feedback">
+                        번호를 입력해주세요
+                    </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">수신자 번호</label>
+                    <input type="text" class="form-control" id="validationCustom02" name = "receiveNum1" placeholder="'-'없이 입력해주세요" required>
+                    <div class="invalid-feedback">
+                        번호를 입력해주세요
+                    </div>        
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="validationCustom04" class="form-label">State</label>
+                        <select class="form-select" id="validationCustom04" required>
+                          <option selected disabled value="">Choose...</option>
+                          <option>...</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Please select a valid state.
+                        </div>
+
+                        <div class="row">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sendingtime" id="timeNow" value="timeNow" checked onclick="sendTimeCheck();">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              즉시
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sendingtime" id="timeReserve" value="timeReserve" onclick="sendTimeCheck();">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                              예약
+                            </label>
+                          </div>
+                          <div id="ifReserve" style="display:none">                
+                            send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
+                            send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
+                            send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
+                            <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
+                          </div>
+
+                        </div>
+                
+                    <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Submit form</button>
+                    </div>
+                </form>
+        	</div>
+	</div> 
+    
+      <script>
+          // Example starter JavaScript for disabling form submissions if there are invalid fields
+          (function () {
+            'use strict'
+          
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+          
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+              .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                  if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                  }
+          
+                  form.classList.add('was-validated')
+                }, false)
+              })
+          })()
+
+
+          function sendTimeCheck() {
+            if (document.getElementById('timeReserve').checked) {
+              document.getElementById('ifReserve').style.display = 'block';
+            }
+            else document.getElementById('ifReserve').style.display = 'none';
+            
+          }
+      </script>
+    
+</body>
+</html>

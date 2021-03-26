@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>Document</title>
+</head>
+<body>
+
+  <!-- ================Select buttons================== -->
+  <div>
+    <fieldset>
+      <legend>Insert button</legend>
+      <select id = "tplAddBtnList" name = "tplAddBtnList">
+        <option value="" selected="selected">Selelct button type</option>
+        <option value="WL">Web link</option>
+        <option value="AL" >App link</option>
+        <option value="BK" >Bot keyword</option>
+        <option value="MD">Send message</option> 
+      </select>           
+      <button type="button" onclick="tplAddBtn();">+ Add button</button>
+      <button type="button" onclick="removeBtn();">버튼 초기화</button>
+    </fieldset>
+  </div>
+  <div id="btnArea" class="btnArea"></div>
+  
+ 
+ <script type="text/JavaScript">
+  var btnSet = 0;  // number of buttons
+
+  function tplAddBtn() {
+    var tplCode = $('#tplAddBtnList').val(); //tplCode : WL,AL,BK,MD 중 하나
+    if (tplCode && btnSet < 5){
+      var tplAreaTemp = ''
+      var tplAreaTempTitle = 
+      //'<button type="button" class="tpl_btn_del" onclick="removeBtn($(this))"> DELETE </button> <button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
+      '<button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
+      
+      
+      tplAreaTempTitle += '<input type="text" name="btn_name" placeholder="버튼명을 입력하세요.(최대 14자)" style="width:300px"/><br>'
+     
+      switch (tplCode) {
+        case 'WL':
+              tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>웹링크' + tplAreaTempTitle
+              tplAreaTemp += '<label>링크(모바일웹)</label><br><input type="text" name="linkMo" placeholder="URL을 입력하세요" /><br><label>링크(PC)</label><br><input type="text" name="linkPc" placeholder="URL을 입력하세요" /></fieldset>'
+              break;  
+        case 'AL':
+              tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>앱링크' + tplAreaTempTitle
+              tplAreaTemp += '<label>링크(안드로이드)</label><br><input type="text" name="linkAnd" placeholder="링크 주소를 입력하세요" /><br><label>링크(아이폰)</label><br><input type="text" name="linkIos" placeholder="링크 주소를 입력하세요" /></fieldset>'
+              break;
+        case 'BK':
+              tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>봇키워드' + tplAreaTempTitle + '</fieldset>'
+              break;
+        case 'MD':
+              tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>메세지전달' + tplAreaTempTitle + '</fieldset>'
+              break;   
+      }             
+    btnSet ++;
+    console.log(btnSet);
+    $('#btnArea').prepend(tplAreaTemp);          
+    }else {
+      if (btnSet == 5) {
+        alert('버튼은 최대 5개까지만 생성 가능합니다.');
+      } else {
+        alert('버튼타입을 선택하세요.');
+      }
+    }
+  }   
+
+  function removeBtn() {   
+    $("div").remove('.btnArea');
+    btnSet = 0;
+    console.log(btnSet);
+    location.reload();
+  }
+
+  function isBtnUp(el, type) {
+    // 버튼넣기 위치변경
+    var thisIndex = el.parent().parent().index()
+    if (type) {
+      // 올리기
+      $('#btnArea').children().eq(thisIndex - 1).insertAfter(el.parent().parent())
+      updateBtnArea(thisIndex, 'up');
+    } else {
+      // 내리기
+      $('#btnArea').children().eq(thisIndex + 1).after(el.parent().parent())
+      updateBtnArea(thisIndex, 'down');
+    }
+    // 정렬하기
+    resetMoveBtn();
+  }
+
+
+  function resetMoveBtn () {
+    // 버튼넣기 이동버튼 초기화시키기
+    $('#btnArea fieldset').each(function (index, item) {
+      $(item).find('button').show();
+      if (index == 0) {
+        $(item).find('.up').hide();
+      }
+      if (index == (btnSet - 1)) {
+        $(item).find('.down').hide();
+      }
+    });
+  }
+  
+  function updateBtnArea (el, type) {
+    if (type == 'del') {
+      // 버튼 삭제시 화면반영하기
+      var thisIndex = el.parent().parent().index();
+      el.parent().parent().remove();
+      btnArea.children().eq(thisIndex).remove();
+    } else if (type == 'up') {
+      // 올리기
+      btnArea.children().eq(el - 1).insertAfter(btnArea.children().eq(el));
+    } else if (type == 'down') {
+      // 내리기
+      btnArea.children().eq(el + 1).after(btnArea.children().eq(el));
+    }
+  }
+
+
+
+
+  </script>
+
+  
+
+</body>
+</html>

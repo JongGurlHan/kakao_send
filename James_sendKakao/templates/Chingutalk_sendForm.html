@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>퍼포마스 친구톡 보내기</title>
+    <title>퍼포마스 친구톡 보내기</title>    
     <style>
       fieldset {
         width: 450px;
@@ -21,71 +21,202 @@
       input {
         margin: 5px;
       }
-      </style>
-
-</head>
-<body>
+    </style>
+    
+  </head>
+  <body>    
+     
     <center>
         <p><h1>sending Chingutalk</h1></p>
-        <form action = "http://127.0.0.1:5070/sendChingutalk" method="POST" enctype="multipart/form-data">          
+        <form action = "http://127.0.0.1:5070/sendChingutalk" method="POST" enctype="multipart/form-data" name="sendForm" onsubmit = "phoneNoValidate();">          
             <p>input sender num : 
                 <input type = "number" name = "sendNum" placeholder="plz input without '-'" value="{{
-                request.form.sendNum}}">
+                request.form.sendNum}}" required >
             </p>
             <p>input receiver num: 
                 <input type = "number" name = "receiveNum1" placeholder="plz input without '-'" value="{{
-                request.form.receiveNum1}}">
+                request.form.receiveNum1}}" required>
                
             </p>
-            <!-- <p>input receiver num: 
-                <input type = "text" name = "receiveNum2" placeholder="plz input without '-'" value="{{
-                request.form.receiveNum2}}">
-            </p> -->
+            
 
+            <!-- ================ Input message ================== -->
             <p>input message content: <br>
-                <input type = "text" name = "message"  style="width:300px;height:300px;" placeholder="You can enter up to 1000 characters value"{{
-                request.form.receiveNum2}}">
+                <input type = "text" name = "messageContents"  style="width:300px;height:300px;" placeholder="You can enter up to 1000 characters value"{{
+                request.form.receiveNum2}}" required>
             </p>
 
-            <fieldset>
-              <legend>Attach image(optional)</legend>
-              <p>insert image file:<input type = "file" name = "file" id="file" value="file" />              
-              <br>link to the image: <input type="url" name="image_url"></p>
-            </fieldset>
 
+            <!-- ================ Attach image ================== -->
+            <div>
+              <fieldset>
+                <legend>Attach image(optional)</legend>
+                <p>insert image file:<input type = "file" name = "file" id="file" value="file" />              
+                <br>link to the image: <input type="url" name="image_url"></p>
+              </fieldset>
+            </div>
+
+
+            <!-- ================Select buttons================== -->
+            <div>
+              <fieldset>
+                <legend>Insert button</legend>
+                <select id = "tplAddBtnList" name = "tplAddBtnList">
+                  <option value="" selected="selected">Selelct button type</option>
+                  <option value="WL">Web link</option>
+                  <option value="AL" >App link</option>
+                  <option value="BK" >Bot keyword</option>
+                  <option value="MD">Send message</option> 
+                </select>           
+                <button type="button" onclick="tplAddBtn();">+ Add button</button>
+                <button type="button" onclick="removeBtn();">버튼 초기화</button>
+              </fieldset>
+            </div>
+            <div id="btnArea" class="btnArea"></div>
+
+           
+
+            <!-- ================Set send time================== -->
             <div>
               <fieldset>
                 <legend>Set send time</legend>
                 <h3></h3>
                 Now <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeNow" value="timeNow" checked/> 
                 Reserve <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeReserve" value="timeReserve" /><br>
-                    <div id="ifReserve" style="display:none">                
+                <div id="ifReserve" style="display:none">                
                           send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
                           send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
                           send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
-                          <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
-                    </div>
-
+                          <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                    
+                          
+                </div>
               </fieldset>
             </div>
+            <!-- ================ Send Button ================== -->
             <p><input type="submit" value ="send" style="width:280px;height:50px;"/> </p>
 
             <p><i>친구톡은 고객님의 카카오채널ID를 친구 추가한 수신자에게만 발송됩니다.<br>
                 친구 추가 되어있지 않은 수신자에게는 대체문자가 발송됩니다.</i></p>
             
-        </form>
+        
     </center>
-
+    
+    
     <script>
-      function sendTimeCheck() {
-          if (document.getElementById('timeReserve').checked) {
-              document.getElementById('ifReserve').style.display = 'block';
-          }
-          else document.getElementById('ifReserve').style.display = 'none';
       
+      var btnSet = 0;  // number of buttons
+
+      function sendTimeCheck() {
+        if (document.getElementById('timeReserve').checked) {
+            document.getElementById('ifReserve').style.display = 'block';
+        }
+        else document.getElementById('ifReserve').style.display = 'none';
+      }
+      
+      function phoneNoValidate() {        
+        var senderNum = document.forms["sendForm"]["sendNum"].value;        
+        var receiveNum1 = document.forms["sendForm"]["receiveNum1"].value;            
+        var phoneno = /^\d{11}$/;
+
+        if(senderNum.match(phoneno) && receiveNum1.match(phoneno) ){
+          return true;
+        }else{
+          alert("올바른 형식의 번호가 아닙니다 \n 010xxxxxxxx(총11자리) 수로 입력해주세요");
+          return false;
+        }  
+      }
+
+
+      function tplAddBtn() {
+        var tplCode = $('#tplAddBtnList').val(); //tplCode : WL,AL,BK,MD 중 하나
+        if (tplCode && btnSet < 5){
+          var tplAreaTemp = ''
+          var tplAreaTempTitle = 
+          //'<button type="button" class="tpl_btn_del" onclick="removeBtn($(this))"> DELETE </button> <button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
+          '<button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
+          
+          
+          tplAreaTempTitle += '<input type="text" name="btn_name" placeholder="버튼명을 입력하세요.(최대 14자)" style="width:300px"/><br>'
+         
+          switch (tplCode) {
+            case 'WL':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>웹링크' + tplAreaTempTitle
+                  tplAreaTemp += '<label>링크(모바일웹)</label><br><input type="text" name="linkMo" placeholder="URL을 입력하세요" /><br><label>링크(PC)</label><br><input type="text" name="linkPc" placeholder="URL을 입력하세요" /></fieldset>'
+                  break;  
+            case 'AL':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>앱링크' + tplAreaTempTitle
+                  tplAreaTemp += '<label>링크(안드로이드)</label><br><input type="text" name="linkAnd" placeholder="링크 주소를 입력하세요" /><br><label>링크(아이폰)</label><br><input type="text" name="linkIos" placeholder="링크 주소를 입력하세요" /></fieldset>'
+                  break;
+            case 'BK':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>봇키워드' + tplAreaTempTitle + '</fieldset>'
+                  break;
+            case 'MD':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h2>메세지전달' + tplAreaTempTitle + '</fieldset>'
+                  break;   
+          }             
+        btnSet ++;
+        console.log(btnSet);
+        $('#btnArea').prepend(tplAreaTemp);          
+        }else {
+          if (btnSet == 5) {
+            alert('버튼은 최대 5개까지만 생성 가능합니다.');
+          } else {
+            alert('버튼타입을 선택하세요.');
+          }
+        }
+      }   
+    
+      function removeBtn() {   
+        $("div").remove('.btnArea');
+        btnSet = 0;
+        console.log(btnSet);
+        location.reload();
+      }
+    
+      function isBtnUp(el, type) {
+        // 버튼넣기 위치변경
+        var thisIndex = el.parent().parent().index()
+        if (type) {
+          // 올리기
+          $('#btnArea').children().eq(thisIndex - 1).insertAfter(el.parent().parent())
+          updateBtnArea(thisIndex, 'up');
+        } else {
+          // 내리기
+          $('#btnArea').children().eq(thisIndex + 1).after(el.parent().parent())
+          updateBtnArea(thisIndex, 'down');
+        }
+        // 정렬하기
+        resetMoveBtn();
+      }
+
+      function resetMoveBtn () {
+        // 버튼넣기 이동버튼 초기화시키기
+        $('#btnArea fieldset').each(function (index, item) {
+          $(item).find('button').show();
+          if (index == 0) {
+            $(item).find('.up').hide();
+          }
+          if (index == (btnSet - 1)) {
+            $(item).find('.down').hide();
+          }
+        });
+      }
+    
+      function updateBtnArea (el, type) {
+        if (type == 'del') {
+          // 버튼 삭제시 화면반영하기
+          var thisIndex = el.parent().parent().index();
+          el.parent().parent().remove();
+          btnArea.children().eq(thisIndex).remove();
+        } else if (type == 'up') {
+          // 올리기
+          btnArea.children().eq(el - 1).insertAfter(btnArea.children().eq(el));
+        } else if (type == 'down') {
+          // 내리기
+          btnArea.children().eq(el + 1).after(btnArea.children().eq(el));
+        }
       }
     </script>
-    
    
 </body>
 </html>

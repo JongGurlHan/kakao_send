@@ -6,7 +6,7 @@ import json
 from Alimtalk_checkList import getTemplateMessage
 from get_token import genToken  #token 생성
 
-app = Flask("__name__")
+#app = Flask("__name__")
 
 @app.route('/alimtalk')
 def index_alimtalk():
@@ -104,6 +104,7 @@ def sendMessage1():
  
 
     return sms_data
-
+'''
 if __name__ == '__main__':
     app.run(port=5050, debug=True)
+'''
