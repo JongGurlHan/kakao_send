@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>알림톡 전송</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- ================== datepicker ==================-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <!-- ================================================-->
+
+</head>
+<style>
+    form .button{
+        height: 45px;
+        margin: 45px 0;
+    }
+    
+    form .button input{
+        height: 100%;
+        width: 100%;
+        outline: none;
+        color: #fff;
+        border:none;
+        font-size: 18px;
+        font-weight: 500;
+        border-radius:  5px;
+        letter-spacing: 1px;
+        background: linear-gradient(135deg, #d3cce3, #e9e4f0);    
+    }
+    form .button input:hover{
+        background: linear-gradient(-135deg, #d3cce3, #e9e4f0);            
+    }
+</style>
+<body>   
+
+    <div class ="container">
+        <div class = "title">알림톡 전송</div>
+        <br>
+            <form action="http://127.0.0.1:5070/sendAlimtalk" class="main-form needs-validation"  method="post"  novalidate>
+                <!-- style="width: 550px; margin:auto;" -->
+             
+
+                    <!-- ==================== 발신자, 수신자 입력 ====================  -->
+                    <div class = "form-group">
+
+                        <div class = "row">
+                            <div class ="col">   
+                                <label for ="sendNum" class="datails">발신자 번호</label>                                    
+                                <input type ="text" name ="sendNum" id ="sendNum" class="form-control" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" placeholder="'-'없이 입력해주세요" required>
+                                <div class ="invalid-feedback">발신 번호를 입력해주세요<br>형식에 맞지 않는 번호입니다.</div>
+                            </div>
+                            <div class ="col">    
+                                <label for ="receiveNum1" class="datails">수신자 번호</label>
+                                <input type ="text" name ="receiveNum1" id ="receiveNum1" class="form-control" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" placeholder="'-'없이 입력해주세요" required>
+                                <div class ="invalid-feedback">수신 번호를 입력해주세요<br>형식에 맞지 않는 번호입니다. </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                
+                
+                <!-- ==================== 템플릿 선택 ====================  -->
+                <div class = "form-group">
+                    <label for = "template">템플릿 선택</label>
+                    <select name ="template" id="template" class="form-control" required>
+                        <option selected disabled value="">선택하세요.</option>
+                        {% for list in lists %}
+                        <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
+                        {% endfor %} 
+                    </select>
+                    <div class ="invalid-feedback">템플릿을 선택해주세요</div>
+                </div>
+                
+                <!-- ==================== 등록된 템플릿 조회 ====================  -->
+                <div class="form-group"> 
+                    <label for = "template">등록된 템플릿</label>                   
+                    <div class="row" >
+                        <!-- style ="width:500px; margin:auto;" -->
+                        {% for list in lists %}
+                        <div class = "col-md-4">
+                            <div class="card" style="width: 11rem; font-size: 12px; " >   
+                                <h6 class="card-header" style = "font-size: 14px;">{{list['templtName']}}</h5>                            
+                                    <div class="card-body">
+                                        <p class="card-text">{{list['templtContent']}}</p>                              
+                                    </div>
+                                </div>
+                            </div> 
+                            {% endfor %}  
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <!-- ==================== 전송시간 설정 ====================  -->
+                    <div class="form-group" >
+                        <label for = "sendingtime">전송시간</label>                         
+                        
+                        
+                        
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeNow">
+                                <input type="radio" class="form-check-input" id="timeNow" name="sendingtime" value="timeNow"  onclick="sendTimeCheck();" checked> 즉시
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeReserve">
+                                <input type="radio" class="form-check-input" id="timeReserve" name="sendingtime" value="timeReserve" onclick="sendTimeCheck();"> 예약
+                            </label>
+                        </div>
+                        <div id="ifReserve" style="display:none">                            
+                            
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" id="date" name="date" style="width: 200px;">
+                                    </div>
+                                    <div class="col">
+                                        <input type="time" id="time" name="time" style="width: 200px;" >
+                                    </div>
+                                </div>                                
+                            </div>                                     
+                            
+                            
+                        </div>
+                        
+                    </div> 
+
+                    <div class="button">                         
+                        <input type ="submit" id="submit" value = "전송">
+                    </div>                     
+                    
+                </form>
+            </div>
+            
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+            
+            
+            <script>
+                // Disable form submissions if there are invalid fields
+                (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                        // Get the forms we want to add validation styles to
+                        var forms = document.getElementsByClassName('needs-validation');
+                        // Loop over them and prevent submission
+                        var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                        });
+                    }, false);
+                    })();
+
+                function sendTimeCheck() {
+                    if (document.getElementById('timeReserve').checked) {
+                        document.getElementById('ifReserve').style.display = 'block';
+                    }
+                    else document.getElementById('ifReserve').style.display = 'none';
+                    
+                }
+                $(function () {
+                    $('#datetimepicker1').datetimepicker();
+                });
+
+                
+    </script>
+</body>
+
+</html>
+
