@@ -1,146 +1,337 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-    <title>퍼포마스 알림톡 보내기</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>알림톡 전송</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <style>
-        fieldset {
-          width: 450px;
-          background-color: #eeeeee;
-        }
-        
-        legend {
-          background-color: gray;
-          color: white;
-          padding: 5px 10px;
-          text-align: center;        
-        }      
-        input {
-          margin: 5px;
-        }
-        </style>
+    <link rel="stylesheet" href="/static/alimtalk_style.css">
+
+    <!-- ================== datepicker ==================-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <!-- ================================================-->
+
 </head>
-<body>
-    <center>
-        <p><h1>sending Alimtalk</h1></p>
-        <form action = "http://127.0.0.1:5070/sendAlimtalk" method="POST" name="sendForm" onsubmit = "phoneNoValidate();">          
 
-            <p>input sender num : 
-                <input type = "text" name = "sendNum" placeholder="plz input without '-'"  required/>
-            </p>
-            <p>input receiver num: 
-                <input type = "text" name = "receiveNum1" placeholder="plz input without '-'" required/>
-            </p>           
+<body>   
 
-            <br>
-            <div>
-                <p>Select Alimtalk template</p>
-                <select name = 'template' class="form-select" aria-label="Default select example">
-                    {% for list in lists %}
-                    <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
-                    {% endfor %}  
-                </select>
-            </div>     
-            
-            <div>                    
-                <div class="row" style ="width:850px;">
-                    {% for list in lists %}
-                    <div class = "col-md-4">
-                        <div class="card" style="width: 15rem;">   
-                            <h6 class="card-header">{{list['templtName']}}</h5>                            
-                                <div class="card-body">
-                                    <p class="card-text">{{list['templtContent']}}</p>                              
-                                </div>
+    <div class ="container">
+        <div class = "title">알림톡 전송</div>
+        <br>
+            <form action="http://127.0.0.1:5070/sendAlimtalk" class="main-form needs-validation"  method="post"  novalidate>
+                <!-- style="width: 550px; margin:auto;" -->
+             
+
+                    <!-- ==================== 발신자, 수신자 입력 ====================  -->
+                    <div class = "form-group">
+
+                        <div class = "row">
+                            <div class ="col">   
+                                <label for ="sendNum" class="datails">발신자 번호</label>                                    
+                                <input type ="text" name ="sendNum" id ="sendNum" class="form-control" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" placeholder="'-'없이 입력해주세요" required>
+                                <div class ="invalid-feedback">발신 번호를 입력해주세요<br>형식에 맞지 않는 번호입니다.</div>
                             </div>
-                        </div>       
-                        
-                        {% endfor %}  
+                            <div class ="col">    
+                                <label for ="receiveNum1" class="datails">수신자 번호</label>
+                                <input type ="text" name ="receiveNum1" id ="receiveNum1" class="form-control" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" placeholder="'-'없이 입력해주세요" required>
+                                <div class ="invalid-feedback">수신 번호를 입력해주세요<br>형식에 맞지 않는 번호입니다. </div>  
+                            </div>
+                        </div>
                     </div>
+                    <br>
+                
+                
+                <!-- ==================== 템플릿 선택 ====================  -->
+                <div class = "form-group">
+                    <label for = "template">템플릿 선택</label>
+                    <select name ="template" id="template" class="form-control" required>
+                        <option selected disabled value="">선택하세요.</option>
+                        {% for list in lists %}
+                        <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
+                        {% endfor %} 
+                    </select>
+                    <div class ="invalid-feedback">템플릿을 선택해주세요</div>
                 </div>
                 
-                <div>
-                    <fieldset>
-                        <legend>Set send time</legend>
-                        <h3></h3>
-                        Now <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeNow" value="timeNow" checked/> 
-                        Reserve <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeReserve" value="timeReserve" /><br>
-                        <div id="ifReserve" style="display:none">                
-                            send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
-                            send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
-                            send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
-                            <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
+                <!-- ==================== 등록된 템플릿 조회 ====================  -->
+                <div class="form-group"> 
+                    <label for = "template">등록된 템플릿</label>                   
+                    <div class="row" >
+                        <!-- style ="width:500px; margin:auto;" -->
+                        {% for list in lists %}
+                        <div class = "col-md-4">
+                            <div class="card" style="width: 11rem; font-size: 12px; " >   
+                                <h6 class="card-header" style = "font-size: 14px;">{{list['templtName']}}</h5>                            
+                                    <div class="card-body">
+                                        <p class="card-text">{{list['templtContent']}}</p>                              
+                                    </div>
+                                </div>
+                            </div> 
+                            {% endfor %}  
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <!-- ==================== 전송시간 설정 ====================  -->
+                    <div class="form-group" >
+                        <label for = "sendingtime">전송시간</label>                         
+                        
+                        
+                        
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeNow">
+                                <input type="radio" class="form-check-input" id="timeNow" name="sendingtime" value="timeNow"  onclick="sendTimeCheck();" checked> 즉시
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeReserve">
+                                <input type="radio" class="form-check-input" id="timeReserve" name="sendingtime" value="timeReserve" onclick="sendTimeCheck();"> 예약
+                            </label>
+                        </div>
+                        <div id="ifReserve" style="display:none">                            
+                            
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" id="date" name="date" style="width: 200px;">
+                                    </div>
+                                    <div class="col">
+                                        <input type="time" id="time" name="time" style="width: 200px;" >
+                                    </div>
+                                </div>                                
+                            </div>                                     
+                            
+                            
                         </div>
                         
-                    </fieldset>
-                </div>    
-                
-                <p><input type="submit" value ="send"/> </p>
+                    </div> 
+                    <!-- ==================== 전송시간 설정 ====================  -->
 
+
+                    <!-- ==================== 전송버튼 ====================  -->
+                    <div class="button">                         
+                        <input type ="submit" id="submit" data-toggle="modal" data-target="#staticBackdrop" value = "전송">
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">알림톡 메시지</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    메시지가 성공적으로 전송됐습니다.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">닫기</button>
+                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                        {% if result_code == 0 %}
+                            
+
+                            <!-- <script type="text/javascript">
+                                alert("성공적으로 발송됐습니다.");                            
+                            </script> -->
+                        {% elif result_code == -99 %}
+                            <script type="text/javascript">
+                                alert("발송실패! \n{{result_message}}");                            
+                            </script>
+                        {% endif %}
+                        {% if timeError_message %}
+                        <script type="text/javascript">
+                            alert("발송실패! \n{{timeError_message}}");                            
+                        </script>
+                    
+                        {% endif %}
+                    </div>     
+                    <!-- ==================== 전송버튼 ====================  -->                
+                    
+                </form>
+            </div>
+
+            <script>
                 
-                
-                
-                
-                
-            </form>
-        </center>
-        
-        {% for list in tpl_list %}
-        {{list}} 
-        {% endfor %}
-        
-        
-        <script>
-            function sendTimeCheck() {
-                if (document.getElementById('timeReserve').checked) {
-                    document.getElementById('ifReserve').style.display = 'block';
+// Disable form submissions if there are invalid fields
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        // Get the forms we want to add validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 }
-                else document.getElementById('ifReserve').style.display = 'none';
-                
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+  })();
+  
+  //전송시간 체크
+  function sendTimeCheck() {
+    if (document.getElementById('timeReserve').checked) {
+        document.getElementById('ifReserve').style.display = 'block';
+    }
+    else document.getElementById('ifReserve').style.display = 'none';
+  
+  }
+  $(function () {
+    $('#datetimepicker1').datetimepicker();
+  });
+  
+  //이미지 여부 체크
+  function imgCheck() {
+    if (document.getElementById('img_type').checked) {
+        document.getElementById('ifImg').style.display = 'block';
+    }
+    else document.getElementById('ifImg').style.display = 'none';
+  
+  }
+  
+  
+  
+  //==========================================버튼 추가 관련==============================================
+  var btnSet = 0; // 버튼갯수
+  
+        function tplAddBtn() {
+            // 버튼추가하기
+            var tplCode = $('#tplAddBtnList').val();
+            if (tplCode && btnSet < 5) {
+              var tplAreaTemp = ''
+              var tplAreaTempTitle = '<button type="button" class="tpl_btn_del" onclick="removeBtn($(this))">제거</button><button type="button" class="down btn" onclick="isBtnUp($(this), false)">아래</button><button type="button" class="up btn" onclick="isBtnUp($(this), true)">위로</button> '
+              //var tplAreaTempTitle = '<button type="button" class="tpl_btn_del btn" style="background: transparent" onclick="removeBtn($(this))"><i class="far fa-times-circle"></i></button><button type="button" class="up btn" style="background: transparent" onclick="isBtnUp($(this), false)"><i class="far fa-arrow-alt-circle-up" ></i></button><button type="button" class="down btn" style="background: transparent" onclick="isBtnUp($(this), true)"><i class="far fa-arrow-alt-circle-down"></i></button>'
+              tplAreaTempTitle += '<input type="text" class="form-control" name="btn_name" placeholder="버튼명을 입력하세요.(최대 14자)" onkeyup="updateBtnArea($(this), \'title\')" onchange="setVariable()" />'
+              switch (tplCode) {
+                case 'WL':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h5>웹링크' + tplAreaTempTitle
+                  tplAreaTemp += '<label>링크(모바일웹)</label><input type="text" class="form-control" name="linkMo" placeholder="URL을 입력하세요" onchange="checkUrl($(this))"/><label>링크(PC)</label><input type="text" class="form-control" name="linkPc" placeholder="URL을 입력하세요" onchange="checkUrl($(this))" /></fieldset>'
+                  break;
+                case 'AL':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h5>앱링크' + tplAreaTempTitle
+                  tplAreaTemp += '<label>링크(안드로이드)</label><input type="text" class="form-control" name="linkAnd" placeholder="링크 주소를 입력하세요" onchange="checkUrl($(this))"/><label>링크(아이폰)</label><input type="text" class="form-control" name="linkIos" placeholder="링크 주소를 입력하세요" onchange="checkUrl($(this))"/></fieldset>'
+                  break;
+                case 'BK':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h5>봇키워드' + tplAreaTempTitle + '</fieldset>'
+                  break;
+                case 'MD':
+                  tplAreaTemp += '<fieldset class="' + tplCode + '"><h5>메세지전달' + tplAreaTempTitle + '</fieldset>'
+                  break;
+              }
+              btnSet ++;
+              $('#btnArea').prepend(tplAreaTemp);
+              updateBtnArea(tplCode, 'new');
+              resetMoveBtn();
+            } else {
+              if (btnSet == 5) {
+                alert("버튼은 최대 5개까지만 생성 가능합니다.");
+              } else {
+                alert('버튼타입을 선택하세요.');
+              }
             }
+          }
+  
+          function removeBtn(el) {
+            // 버튼 지우기
+            btnSet --;
+            resetMoveBtn();
+            updateBtnArea(el, 'del');
             
-            
-            function phoneNoValidate() {        
-                var senderNum = document.forms["sendForm"]["sendNum"].value;        
-                var receiveNum1 = document.forms["sendForm"]["receiveNum1"].value;            
-                var phoneno = /^\d{11}$/;
-                
-                if(senderNum.match(phoneno) && receiveNum1.match(phoneno) ){
-                    return true;
-                }else{
-                    alert("올바른 형식의 번호가 아닙니다 \n 010xxxxxxxx(총11자리) 수로 입력해주세요");
-                    return false;
-                }  
-            }
-            
-            
-        </script>
+          }
         
-    </body>
-    </html>
-    <!-- 템플릿 선택 (삭제예정)
-    <div> 
-        <p>Select Alimtalk template</p>
-        <select name = 'template'>
-            {% for list in lists %}
-            <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
-            {% endfor %}                  
-        </select>
-    </div> -->
+          function isBtnUp(el, type) {
+            // 버튼넣기 위치변경
+            var thisIndex = el.parent().parent().index()
+            if (type) {
+              // 올리기
+              $('#btnArea').children().eq(thisIndex - 1).insertAfter(el.parent().parent())
+              updateBtnArea(thisIndex, 'up');
+            } else {
+              // 내리기
+              $('#btnArea').children().eq(thisIndex + 1).after(el.parent().parent())
+              updateBtnArea(thisIndex, 'down');
+            }
+            // 정렬하기
+            resetMoveBtn();
+          }
+        
+          function resetMoveBtn () {
+            // 버튼넣기 이동버튼 초기화시키기
+            $('#btnArea fieldset').each(function (index, item) {
+              $(item).find('button').show();
+              if (index == 0) {
+                $(item).find('.up').hide();
+              }
+              if (index == (btnSet - 1)) {
+                $(item).find('.down').hide();
+              }
+            });
+          }
+  
+          function updateBtnArea (el, type) {
+            // 버튼 업데이트 반영하기
+            var btnArea = $('#friendBtnArea');
+            if (type == 'new') {
+              // 버튼추가시 화면반영
+              btnArea.prepend('<span>버튼명</span>');
+            } else if (type == 'title') {
+              // 텍스트 입력시 바인딩
+              var thisTitle = el.val();
+              if (thisTitle.length > 14) {
+                el.val(thisTitle.substring(0,14));
+                return false;
+              }
+              var thisIndex = el.parent().index();
+              if (thisTitle) {
+                btnArea.children().eq(thisIndex).text(thisTitle);
+              } else {
+                btnArea.children().eq(thisIndex).text('버튼명');
+              }
+            } else if (type == 'del') {
+              // 버튼 삭제시 화면반영하기
+              var thisIndex = el.parent().parent().index();
+              el.parent().parent().remove();
+              btnArea.children().eq(thisIndex).remove();
+            } else if (type == 'up') {
+              // 올리기
+              btnArea.children().eq(el - 1).insertAfter(btnArea.children().eq(el));
+            } else if (type == 'down') {
+              // 내리기
+              btnArea.children().eq(el + 1).after(btnArea.children().eq(el));
+            }
+          }
+  
+            </script>
+            <script src = "/static/alimtalk.js"></script>
+            
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+            
+            
+           
+</body>
 
-    <!-- 템플릿 조회(삭제예정) 
-    <div>                    
-        {% for index in lists %}
-        <ol> {{loop.index}} {{index['templtContent']}} </ol>
-        {% endfor %}  
-    </div> -->
+</html>
+

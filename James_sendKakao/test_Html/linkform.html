@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+        <title>Document</title>
+
+    </head>
+    
+    <body>
+    <style>
+        .fa-times-circle,
+        .fa-arrow-alt-circle-up,
+        .fa-arrow-alt-circle-down
+        {
+            color: #86c1cc;
+            font-size: 3.5rem;
+        ;
+    
+        }
+        .fa-times-circle:hover,
+        .fa-arrow-alt-circle-up:hover,
+        .fa-arrow-alt-circle-down:hover
+        {
+            color: #c5e3e9;            
+        }
+    </style>
+
+    
+
+   <button type="button" class="tpl_btn_del btn" style="background: transparent" onclick="removeBtn($(this))">
+       <i class="far fa-times-circle"></i>
+    </button>
+    
+    <button type="button" class="up btn" style="background: transparent" onclick="isBtnUp($(this), false)">
+        <i class="far fa-arrow-alt-circle-up" ></i>
+    </button>
+
+    <button type="button" class="down btn" style="background: transparent" onclick="isBtnUp($(this), true)">
+        <i class="far fa-arrow-alt-circle-down"></i>
+    </button>
+
+   <button type="button" class="tpl_btn_del btn" style="background: transparent" onclick="removeBtn($(this))"><i class="far fa-times-circle"></i></button><button type="button" class="up btn" style="background: transparent" onclick="isBtnUp($(this), false)"><i class="far fa-arrow-alt-circle-up" ></i></button><button type="button" class="down btn" style="background: transparent" onclick="isBtnUp($(this), true)"><i class="far fa-arrow-alt-circle-down"></i></button>
+
+
+
+
+
+  
+    
+</body>
+</html>

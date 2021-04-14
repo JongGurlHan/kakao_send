@@ -7,21 +7,45 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>퍼포마스 친구톡 보내기</title>    
     <style>
-      fieldset {
-        width: 450px;
-        background-color: #eeeeee;
+      body{
+          display: flex;
+          height: 100vh;
+          justify-content: center;
+          align-items: center;
+          padding:10px;
+          background: #86c1cc;
+      }
+      .container .title::before{
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height:3px;
+          width: 50px;
+          background: #86c1cc;
+          /* background: linear-gradient(135deg, #d3cce3, #e9e4f0); */
+      }
+      form .button{
+          height: 45px;
+          margin: 45px 0;
       }
       
-      legend {
-        background-color: gray;
-        color: white;
-        padding: 5px 10px;
-        text-align: center;        
-      }      
-      input {
-        margin: 5px;
+      form .button input{
+          height: 100%;
+          width: 100%;
+          outline: none;
+          color: #fff;
+          border:none;
+          font-size: 18px;
+          font-weight: 500;
+          border-radius:  5px;
+          letter-spacing: 1px;
+          background: #86c1cc;   
       }
-    </style>
+      form .button input:hover{
+          background: linear-gradient(-135deg, #86c1cc,#c5e3e9);            
+      }
+  </style>
     
   </head>
   <body>    
@@ -51,7 +75,7 @@
             <div>
               <fieldset>
                 <legend>Attach image(optional)</legend>
-                <p>insert image file:<input type = "file" name = "file" id="file" value="file" />              
+                <p>insert image file:<input type = "file" name = "img_file" id="img_file" value="img_file" />              
                 <br>link to the image: <input type="url" name="image_url"></p>
               </fieldset>
             </div>
@@ -126,13 +150,13 @@
         }  
       }
 
+      //'<button type="button" class="tpl_btn_del" onclick="removeBtn($(this))"> DELETE </button> <button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
 
       function tplAddBtn() {
         var tplCode = $('#tplAddBtnList').val(); //tplCode : WL,AL,BK,MD 중 하나
         if (tplCode && btnSet < 5){
           var tplAreaTemp = ''
           var tplAreaTempTitle = 
-          //'<button type="button" class="tpl_btn_del" onclick="removeBtn($(this))"> DELETE </button> <button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
           '<button type="button" class="up" onclick="isBtnUp($(this), true)">UP</button><button type="button" class="down" onclick="isBtnUp($(this), false)">Down</button><br>'
           
           

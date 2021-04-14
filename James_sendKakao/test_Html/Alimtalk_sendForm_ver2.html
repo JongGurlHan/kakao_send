@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>퍼포마스 알림톡 보내기</title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+        fieldset {
+          width: 450px;
+          background-color: #eeeeee;
+        }
+        
+        legend {
+          background-color: gray;
+          color: white;
+          padding: 5px 10px;
+          text-align: center;        
+        }      
+        input {
+          margin: 5px;
+        }
+        </style>
+</head>
+<body>
+    <center>
+        <p><h1>sending Alimtalk</h1></p>
+        <form action = "http://127.0.0.1:5070/sendAlimtalk" method="POST" name="sendForm" onsubmit = "phoneNoValidate();">          
+
+            <p>input sender num : 
+                <input type = "text" name = "sendNum" placeholder="plz input without '-'"  required/>
+            </p>
+            <p>input receiver num: 
+                <input type = "text" name = "receiveNum1" placeholder="plz input without '-'" required/>
+            </p>           
+
+            <br>
+            <div>
+                <p>Select Alimtalk template</p>
+                <select name = 'template' class="form-select" aria-label="Default select example">
+                    {% for list in lists %}
+                    <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
+                    {% endfor %}  
+                </select>
+            </div>     
+            
+            <div>                    
+                <div class="row" style ="width:850px;">
+                    {% for list in lists %}
+                    <div class = "col-md-4">
+                        <div class="card" style="width: 15rem;">   
+                            <h6 class="card-header">{{list['templtName']}}</h5>                            
+                                <div class="card-body">
+                                    <p class="card-text">{{list['templtContent']}}</p>                              
+                                </div>
+                            </div>
+                        </div>       
+                        
+                        {% endfor %}  
+                    </div>
+                </div>
+                
+                <div>
+                    <fieldset>
+                        <legend>Set send time</legend>
+                        <h3></h3>
+                        Now <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeNow" value="timeNow" checked/> 
+                        Reserve <input type="radio" onclick="sendTimeCheck();" name="sendingtime" id="timeReserve" value="timeReserve" /><br>
+                        <div id="ifReserve" style="display:none">                
+                            send date <input type='text' id='date' name='date' placeholder=" ex) 20210311"><br>  
+                            send hour(24h) <input type='text' id='hour' name='hour' placeholder=" ex) 4pm => 16"><br> 
+                            send min <input type='text' id='min' name='min' placeholder=" ex) 55min => 55"><br>  
+                            <font size ="2">=Reservations can be made after 10 minutes of the current time!=</font>                                         
+                        </div>
+                        
+                    </fieldset>
+                </div>    
+                
+                <p><input type="submit" value ="send"/> </p>
+
+                
+                
+                
+                
+                
+            </form>
+        </center>
+        
+        {% for list in tpl_list %}
+        {{list}} 
+        {% endfor %}
+        
+        
+        <script>
+            function sendTimeCheck() {
+                if (document.getElementById('timeReserve').checked) {
+                    document.getElementById('ifReserve').style.display = 'block';
+                }
+                else document.getElementById('ifReserve').style.display = 'none';
+                
+            }
+            
+            
+            function phoneNoValidate() {        
+                var senderNum = document.forms["sendForm"]["sendNum"].value;        
+                var receiveNum1 = document.forms["sendForm"]["receiveNum1"].value;            
+                var phoneno = /^\d{11}$/;
+                
+                if(senderNum.match(phoneno) && receiveNum1.match(phoneno) ){
+                    return true;
+                }else{
+                    alert("올바른 형식의 번호가 아닙니다 \n 010xxxxxxxx(총11자리) 수로 입력해주세요");
+                    return false;
+                }  
+            }
+            
+            
+        </script>
+        
+    </body>
+    </html>
+    <!-- 템플릿 선택 (삭제예정)
+    <div> 
+        <p>Select Alimtalk template</p>
+        <select name = 'template'>
+            {% for list in lists %}
+            <option value="{{list['templtCode']}}">  {{loop.index}} {{list['templtName']}}</option> 
+            {% endfor %}                  
+        </select>
+    </div> -->
+
+    <!-- 템플릿 조회(삭제예정) 
+    <div>                    
+        {% for index in lists %}
+        <ol> {{loop.index}} {{index['templtContent']}} </ol>
+        {% endfor %}  
+    </div> -->

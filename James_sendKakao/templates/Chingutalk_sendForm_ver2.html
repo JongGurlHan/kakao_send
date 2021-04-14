@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>친구톡 전송</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+
+    <link rel="stylesheet" href="/static/chingutalk_style.css">
+
+    <!-- ================== datepicker ==================-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <!-- ================================================-->
+
+    <!-- ================== bootstrap icons ==================-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+</head>
+<style>
+    
+*{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;    
+}
+
+body{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding:10px;
+    background: #86c1cc;
+}
+.container {
+    max-width: 550px;
+    width: 100%;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 5px;
+}
+
+.container .title{
+    font-size: 25px;
+    font-weight: 500;
+    position: relative;
+}
+.container .title::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height:3px;
+    width: 50px;
+    background: #86c1cc;
+    /* background: linear-gradient(135deg, #d3cce3, #e9e4f0); */
+}
+.container form .details{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+}
+form .user-details .row .col .input-box{
+    margin-bottom: 15px;
+    margin: 15px;        
+    width: 200px;
+}
+
+.user-details .input-box .details{
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.user-details .input-box input{
+    height: 45px;
+    width: 100%;
+    outline :none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left:  15px;
+    font-size: 16px;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.user-details .input-box input:focus,
+.user-details .input-box input:valid{
+    border-color:#9b59b6;
+}
+
+form .gender-details .gender-title{
+    font-size: 20px;
+    font-weight:500;
+}
+form .gender-details .category{
+    display: flex;
+    width: 80%;     
+    margin: 14px 0;   
+    justify-content: space-between;
+}
+
+.gender-details .category label{
+    display: flex;
+    align-items: center;
+
+}
+.gender-details .category label .dot{
+    height:  18px;
+    width:  18px;
+    background: #d9d9d9;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 5px solid transparent;
+    transition: all 0.3s ease;
+}
+
+
+form .button{
+    height: 45px;
+    margin: 45px 0;
+}
+
+form .button input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: #fff;
+    border:none;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius:  5px;
+    letter-spacing: 1px;
+    background: #86c1cc;
+    /* background: linear-gradient(135deg, #d3cce3, #e9e4f0);     */
+}
+form .button input:hover{
+    background: linear-gradient(-135deg, #d3cce3, #e9e4f0);            
+}
+
+@media (max-width: 450px){
+    .container {
+        max-width: 100%;
+    }
+    form .details{
+        margin-bottom: 15px;
+        margin: 15px;        
+        width: 200px;
+    }
+    form .gender-details .category{            
+        width: 100%;                
+    }
+    .container .details{
+        max-height: 400px;
+        overflow-y: scroll;
+    }
+    .details::-webkit-scrollbar{
+        width: 0;
+
+    }
+}
+
+body{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding:10px;
+    background: #86c1cc;
+}
+.container .title::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height:3px;
+    width: 50px;
+    background: #86c1cc;
+    /* background: linear-gradient(135deg, #d3cce3, #e9e4f0); */
+}
+form .button{
+    height: 45px;
+    margin: 45px 0;
+}
+
+form .button input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: #fff;
+    border:none;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius:  5px;
+    letter-spacing: 1px;
+    background: #86c1cc;   
+}
+form .button input:hover{
+    background: linear-gradient(-135deg, #86c1cc,#c5e3e9);            
+}
+
+body{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding:10px;
+    background: #86c1cc;
+}
+.container .title::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height:3px;
+    width: 50px;
+    background: #86c1cc;
+}
+
+
+form .button{
+    height: 45px;
+    margin: 45px 0;
+}
+
+form .button input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: #fff;
+    border:none;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius:  5px;
+    letter-spacing: 1px;
+    background: #86c1cc;   
+}
+form .button input:hover{
+    background: linear-gradient(-135deg, #86c1cc,#c5e3e9);            
+}
+
+.fa-times-circle,
+.fa-arrow-alt-circle-up,
+.fa-arrow-alt-circle-down
+{
+    color: #86c1cc;
+    font-size: 3.5rem;
+;
+
+}
+.fa-times-circle:hover,
+.fa-arrow-alt-circle-up:hover,
+.fa-arrow-alt-circle-down:hover
+{
+    color: #c5e3e9;            
+}
+
+
+</style>
+
+
+<body>   
+
+    <div class ="container">
+        <div class = "title">친구톡 전송</div>
+        <br>
+            <form action="http://127.0.0.1:5070/sendChingutalk" class="main-form needs-validation"  enctype="multipart/form-data" name="sendForm" method="post"  novalidate>
+                <!-- style="width: 550px; margin:auto;" -->             
+
+                    <!-- ==================== 발신자, 수신자 입력 ====================  -->
+                     
+                    <div class = "form-group">
+                        <div class = "row">
+                            <div class ="col">   
+                                <label for ="sendNum" class="datails">발신자 번호</label>                                    
+                                <input type ="text" name ="sendNum" id ="sendNum" class="form-control" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" placeholder="'-'없이 입력해주세요" required>
+                                <div class ="invalid-feedback">발신 번호를 입력해주세요<br>형식에 맞지 않는 번호입니다.</div>
+                            </div>
+                            <div class ="col">    
+                                <label for ="receiveNum1" class="datails">수신자 번호</label>
+                                <input type ="text" name ="receiveNum1" id ="receiveNum1" class="form-control" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" placeholder="'-'없이 입력해주세요" required>
+                                <div class ="invalid-feedback">수신 번호를 입력해주세요<br>형식에 맞지 않는 번호입니다. </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- ==========================================================  -->
+
+                    <div class ="details" style="max-height:530px; overflow-y: scroll;">
+                    
+                    <!-- ==================== 이미지 첨부 ==================== -->
+                    <div class="form-group" >
+                        <label for = "select_type">친구톡 형태</label> 
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeNow">
+                                <input type="radio" class="form-check-input" id="text_type" name="select_type" value="text_type"  onclick="imgCheck();" checked> 텍스트형
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeReserve">
+                                <input type="radio" class="form-check-input" id="img_type" name="select_type" value="img_type" onclick="imgCheck();"> 이미지형
+                            </label>
+                        </div>
+                        <div id="ifImg" style="display:none">                            
+                            
+                            <div class="container">
+                                <div class = "form-group">
+                                    <label for="img_file">이미지 첨부</label>
+                                    <input type="file" class="form-control-file" name = "img_file" id="img_file" value="img_file">
+                                    <label for="img_file">이미지에 링크 삽입</label>
+                                    <input type="url" id="image_url" class="form-control" name="image_url">
+                                </div>                             
+                            </div>                              
+                        </div>                        
+                    </div> 
+                    <!-- ==================== 이미지 첨부 ==================== -->
+
+
+                     <!-- ==================== 메시지 입력==================== -->                    
+                     <div class = "form-group" style="width: 100%;">
+                        <label for="messageContents">친구톡 내용</label>
+                        <textarea class="form-control" name = "messageContents" id="messageContents" rows="10"  maxlength="1000" placeholder= "내용은 1000자 까지만 입력이 가능합니다." required></textarea>
+                        <div class ="invalid-feedback">친구톡 내용을 입력해주세요.<br>내용은 1000자 까지만 입력이 가능합니다. </div> 
+                    </div>
+                    <!-- ===================================================  -->
+
+
+
+                    <!-- ================Select buttons================== -->                    
+                    <div class="form-group" style="width: 100%;">
+                        <label for="tplAddBtnList">버튼 넣기</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select class="form-control" id="tplAddBtnList" name="tplAddBtnList">
+                                    <option value="" selected="selected">버튼타입을 선택하세요</option>
+                                    <option value="WL">웹링크</option>
+                                    <option value="AL">앱링크</option>
+                                    <option value="BK">봇 키워드</option>
+                                    <option value="MD">메시지 전달</option>
+                                </select>
+                            </div>
+                    
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-outline-primary" onclick="tplAddBtn()" >+ 버튼추가</button>
+                            </div>                    
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div id="btnArea"></div>
+                    </div>
+
+                    <!-- ================Select buttons================== -->                    
+
+                
+                           
+                    
+                    <!-- ==================== 전송시간 설정 ====================  -->
+                    <div class="form-group"style="width: 100%;" >
+                        <label for = "sendingtime">전송시간</label> 
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeNow">
+                                <input type="radio" class="form-check-input" id="timeNow" name="sendingtime" value="timeNow"  onclick="sendTimeCheck();" checked> 즉시
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label" for="timeReserve">
+                                <input type="radio" class="form-check-input" id="timeReserve" name="sendingtime" value="timeReserve" onclick="sendTimeCheck();"> 예약
+                            </label>
+                        </div>
+                        <div id="ifReserve" style="display:none">   
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="date" id="date" name="date" style="width: 200px;">
+                                    </div>
+                                    <div class="col">
+                                        <input type="time" id="time" name="time" style="width: 200px;" >
+                                    </div>
+                                </div>                                
+                            </div>                              
+                        </div>                        
+                    </div> 
+
+                </div>
+                    <!-- ==================== 전송시간 설정 ====================  -->
+                    
+
+                    
+                    <!-- ==================== 전송버튼 ====================  -->
+                    <div class="button">                         
+                        <input type ="submit" id="submit" value = "전송">
+                        {% if result_code == 0 %}
+                            <script type="text/javascript">
+                                alert("성공적으로 발송됐습니다.");                            
+                            </script>
+                        {% elif result_code == -99 %}
+                            <script type="text/javascript">
+                                alert("발송실패! \n{{result_message}}");                            
+                            </script>
+                        {% endif %}
+                        {% if timeError_message %}
+                        <script type="text/javascript">
+                            alert("발송실패! \n{{timeError_message}}");                            
+                        </script>
+                    
+                        {% endif %}
+                    </div>   
+                    <!-- ==================== 전송버튼 ====================  -->                    
+                    
+                </form>
+            </div>
+            <script src="/static/chingutalk.js"></script>
+            
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+            
+
+         
+            
+</body>
+
+</html>
+
+
